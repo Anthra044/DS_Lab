@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define SIZE 3
+
+int q[SIZE], ch, i, value, front = -1, rear = -1;
+
+void insert() {
+    if ((rear + 1) % SIZE == front) { 
+        printf("Queue is full\n");
+        return;
+    }
+    if (front == -1 && rear == -1) { 
+        front = 0;
+        rear = 0;
+    } else {
+        rear = (rear + 1) % SIZE;
+    }
+    printf("Enter element to be inserted: ");
+    scanf("%d", &value);
+    q[rear] = value; 
+}
+
+int delete() {
+    if (front == -1 && rear == -1) { 
+        printf("Queue is empty\n");
+        return -1;
+    }
+    value = q[front]; 
+    if (front == rear) { 
+        front = -1;
+        rear = -1;
+    } else {
+        front = (front + 1) % SIZE; 
+    }
+    return value;
+}
+
+void display() {
+    if (front == -1 && rear == -1) { 
+        printf("Circular queue is empty\n");
+        return;
+    }
+    printf("Circular queue contents: ");
+    if (front <= rear) {
+        for (i = front; i <= rear; i++) {
+            printf("%d\n", q[i]);
+        }
+    } else {
+        for (i = front; i < SIZE; i++) {
+            printf("%d\n", q[i]);
+        }
+        for (i = 0; i <= rear; i++) {
+            printf("%d\n", q[i]);
+        }
+    }
+}
+
+void main() { 
+    while (1) {
+        printf("1.Insert \t 2.Delete \t 3.Display \t 4.Exit \n");
+        printf("Enter your choice: ");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1: 
+                insert();
+                break;
+            case 2: 
+                value = delete();
+                if (value != -1)
+                    printf("Deleted element is %d\n", value);
+                break;
+            case 3: 
+                display();
+                break;
+            case 4: 
+                exit(0);
+            default: 
+                printf("Invalid choice !!\n");
+        }
+    }
+
+}
