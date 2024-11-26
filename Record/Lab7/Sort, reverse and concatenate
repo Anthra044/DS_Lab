@@ -1,0 +1,138 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *link;
+};
+typedef struct Node node;
+
+node *start = NULL;
+int ch;
+char c;
+
+void createList(node **head);
+void sort(node *head);
+void reverse(node **head);
+void display(node *head);
+void concatenate();
+
+void createList(node **head) {
+    node *new1, *curr = NULL;
+    do {
+        new1 = (node*)malloc(sizeof(node));
+        if (new1 == NULL) {
+            printf("Memory allocation failed!\n");
+            exit(1);
+        }
+        printf("Enter Value: ");
+        scanf("%d", &new1->data);
+        new1->link = NULL;
+
+        if (*head == NULL) {
+            *head = new1;
+            curr = new1;
+        } else {
+            curr->link = new1;
+            curr = new1;
+        }
+        printf("Do you want to add another element (Y/N): ");
+        scanf(" %c", &c);
+    } while (c == 'y' || c == 'Y');
+}
+
+void sort(node *head) {
+    if (head == NULL) {
+        printf("The Linked List is Empty.\n");
+        return;
+    }
+
+    node *i, *j;
+    int tempData;
+    for (i = head; i != NULL; i = i->link) {
+        for (j = i->link; j != NULL; j = j->link) {
+            if (i->data > j->data) {
+                tempData = i->data;
+                i->data = j->data;
+                j->data = tempData;
+            }
+        }
+    }
+    printf("Linked List is Sorted.\n");
+}
+
+void reverse(node **head) {
+    node *a = *head, *b = NULL;
+    while (a != NULL) {
+        node *temp = a->link;
+        a->link = b;
+        b = a;
+        a = temp;
+    }
+    *head = b;
+    printf("Linked List is Reversed.\n");
+}
+
+void display(node *head) {
+    if (head == NULL) {
+        printf("Linked list is Empty\n");
+        return;
+    }
+
+    node *temp = head;
+    printf("Elements in Linked List:\n");
+    while (temp != NULL) {
+        printf("%d\t", temp->data);
+        temp = temp->link;
+    }
+    printf("\n");
+}
+
+void concatenate() {
+    node *start2 = NULL;
+
+    printf("Creating the second linked list:\n");
+    createList(&start2);
+
+    if (start == NULL) {
+        start = start2;
+    } else {
+        node *temp = start;
+        while (temp->link != NULL) {
+            temp = temp->link;
+        }
+        temp->link = start2;
+    }
+    printf("Lists concatenated successfully.\n");
+}
+
+int main() {
+    while (1) {
+        printf("\n1. Create 1st Linked List\n2. Sort Linked List\n3. Reverse Linked List\n4. Concatenate Linked Lists\n5. Display Linked List\n6. Exit\n");
+        printf("Enter Your Choice: ");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1:
+                createList(&start);
+                break;
+            case 2:
+                sort(start);
+                break;
+            case 3:
+                reverse(&start);
+                break;
+            case 4:
+                concatenate();
+                break;
+            case 5:
+                display(start);
+                break;
+            case 6:
+                exit(0);
+                break;
+            default:
+                printf("Invalid choice. Please try again .\n");
+                break;
+        }
+    }
+}
