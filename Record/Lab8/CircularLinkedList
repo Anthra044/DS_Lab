@@ -1,0 +1,104 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *link;
+};
+
+typedef struct Node node;
+
+node *new1, *curr, *temp, *start = NULL, *last = NULL;
+
+void create();
+void display();
+void insert_beg();
+void insert_end();
+
+int ch;
+char choice;
+
+void create() {
+    do {
+        new1 = (node *)malloc(sizeof(node));
+        printf("Enter value: ");
+        scanf("%d", &new1->data);
+        new1->link = NULL;
+
+        if (start == NULL) {
+            start = new1;
+            last = new1;
+            new1->link = start; // Circular link
+        } else {
+            last->link = new1;
+            last = new1;
+            last->link = start; // Circular link
+        }
+
+        printf("Do you want to add another element? (Y/N): ");
+        scanf(" %c", &choice); // Note the space before %c to catch newline
+    } while (choice == 'Y' || choice == 'y');
+}
+
+void insert_beg() {
+    new1 = (node *)malloc(sizeof(node));
+    printf("Enter value: ");
+    scanf("%d", &new1->data);
+
+    if (start == NULL) {
+        start = new1;
+        last = new1;
+        new1->link = start; // Circular link
+    } else {
+        new1->link = start;
+        start = new1;
+        last->link = start; // Circular link
+    }
+}
+
+void insert_end() {
+    new1 = (node *)malloc(sizeof(node));
+    printf("Enter value: ");
+    scanf("%d", &new1->data);
+
+    if (start == NULL) {
+        start = new1;
+        last = new1;
+        new1->link = start; // Circular link
+    } else {
+        last->link = new1;
+        last = new1;
+        last->link = start; // Circular link
+    }
+}
+
+void display() {
+    if (start == NULL) {
+        printf("List is Empty\n");
+        return;
+    }
+    printf("Linked List: ");
+    temp = start;
+    do {
+        printf("%d\t", temp->data);
+        temp = temp->link;
+    } while (temp != start);
+    printf("\n");
+}
+
+int main() {
+    while (1) {
+        printf("1. Create\t2. Display\n3. Insert at beginning\t4. Insert at end\n5. Exit\nEnter your choice: ");
+        scanf("%d", &ch);
+
+        switch (ch) {
+            case 1: create(); break;
+            case 2: display(); break;
+            case 3: insert_beg(); break;
+            case 4: insert_end(); break;
+            case 5: exit(0);
+            default: printf("Invalid choice\n");
+        }
+    }
+    return 0;
+}
