@@ -1,0 +1,56 @@
+#include <stdio.h>
+#define MAX 10
+
+int a[MAX][MAX], vis[MAX], n;
+
+void dfs(int v);
+
+int main() {
+    int i, j;
+
+    printf("Enter number of vertices: ");
+    scanf("%d", &n);
+
+    printf("Enter adjacency matrix:\n");
+    for (i = 1; i <= n; i++) {
+        for (j = 1; j <= n; j++) {
+            scanf("%d", &a[i][j]);
+        }
+    }
+
+    for (i = 1; i <= n; i++) {
+        vis[i] = 0; 
+    }
+
+    printf("DFS traversal: ");
+    dfs(1); 
+    
+    
+    int isConnected = 1; 
+    for (i = 1; i <= n; i++) {
+        if (vis[i] == 0) {
+            isConnected = 0; 
+            break;
+        }
+    }
+
+    if (isConnected) {
+        printf("\nThe graph is connected.\n");
+    } else {
+        printf("\nThe graph is not connected.\n");
+    }
+
+    printf("\n");
+    return 0;
+}
+
+void dfs(int v) {
+    printf("%d ", v);
+    vis[v] = 1; 
+
+    for (int i = 1; i <= n; i++) {
+        if (a[v][i] == 1 && vis[i] == 0) {
+            dfs(i);
+        }
+    }
+}
